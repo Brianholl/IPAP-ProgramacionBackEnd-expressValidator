@@ -1,0 +1,978 @@
+{
+  "titulo": "Casos de prueba funcionales - API Distribuidora (TypeScript + Prisma)",
+  "materia": "Programación Backend",
+  "trabajoPractico": "TP N° 6 - Implementación de TypeScript y ORM Prisma",
+  "alumno": "Brian Iván Hollweg",
+  "descripcion": "Correr en orden con la base recién importada. Los POST crean datos que se usan después y al final se borran.",
+  "baseUrl": "http://localhost:3000",
+  "casos": [
+    {
+      "id": "TC-01",
+      "categoria": "General",
+      "descripcion": "Ruta raíz con la lista de recursos",
+      "metodo": "GET",
+      "endpoint": "/",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-02",
+      "categoria": "General",
+      "descripcion": "Ruta inexistente",
+      "metodo": "GET",
+      "endpoint": "/no-existe",
+      "estadoEsperado": 404
+    },
+    {
+      "id": "TC-03",
+      "categoria": "Categorías",
+      "descripcion": "Listar categorías",
+      "metodo": "GET",
+      "endpoint": "/categorias",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-04",
+      "categoria": "Categorías",
+      "descripcion": "Detalle de una categoría",
+      "metodo": "GET",
+      "endpoint": "/categorias/1",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-05",
+      "categoria": "Categorías",
+      "descripcion": "Categoría inexistente",
+      "metodo": "GET",
+      "endpoint": "/categorias/999",
+      "estadoEsperado": 404
+    },
+    {
+      "id": "TC-06",
+      "categoria": "Categorías",
+      "descripcion": "Id que no es número",
+      "metodo": "GET",
+      "endpoint": "/categorias/abc",
+      "estadoEsperado": 400
+    },
+    {
+      "id": "TC-07",
+      "categoria": "Categorías",
+      "descripcion": "Productos, stock y precio promedio por categoría",
+      "metodo": "GET",
+      "endpoint": "/categorias/estadisticas/resumen",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-08",
+      "categoria": "Categorías",
+      "descripcion": "Crear categoría",
+      "metodo": "POST",
+      "endpoint": "/categorias",
+      "body": {
+        "nombre": "Panadería y Masas",
+        "descripcion": "Panes de molde, tapas de empanadas y pastas frescas"
+      },
+      "estadoEsperado": 201
+    },
+    {
+      "id": "TC-09",
+      "categoria": "Categorías",
+      "descripcion": "Crear categoría con nombre repetido",
+      "metodo": "POST",
+      "endpoint": "/categorias",
+      "body": {
+        "nombre": "Panadería y Masas"
+      },
+      "estadoEsperado": 400
+    },
+    {
+      "id": "TC-10",
+      "categoria": "Categorías",
+      "descripcion": "Crear categoría sin nombre",
+      "metodo": "POST",
+      "endpoint": "/categorias",
+      "body": {
+        "descripcion": "sin nombre"
+      },
+      "estadoEsperado": 400
+    },
+    {
+      "id": "TC-11",
+      "categoria": "Categorías",
+      "descripcion": "Modificar categoría",
+      "metodo": "PUT",
+      "endpoint": "/categorias/6",
+      "body": {
+        "nombre": "Panadería",
+        "descripcion": "Panes y facturas"
+      },
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-12",
+      "categoria": "Categorías",
+      "descripcion": "Modificar solo la descripción (PATCH)",
+      "metodo": "PATCH",
+      "endpoint": "/categorias/6",
+      "body": {
+        "descripcion": "Panes, facturas y prepizzas"
+      },
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-13",
+      "categoria": "Categorías",
+      "descripcion": "PATCH sin campos",
+      "metodo": "PATCH",
+      "endpoint": "/categorias/6",
+      "body": {},
+      "estadoEsperado": 400
+    },
+    {
+      "id": "TC-14",
+      "categoria": "Categorías",
+      "descripcion": "Modificar categoría inexistente",
+      "metodo": "PUT",
+      "endpoint": "/categorias/999",
+      "body": {
+        "nombre": "X"
+      },
+      "estadoEsperado": 404
+    },
+    {
+      "id": "TC-15",
+      "categoria": "Categorías",
+      "descripcion": "Borrar categoría con productos",
+      "metodo": "DELETE",
+      "endpoint": "/categorias/1",
+      "estadoEsperado": 400
+    },
+    {
+      "id": "TC-16",
+      "categoria": "Proveedores",
+      "descripcion": "Listar proveedores",
+      "metodo": "GET",
+      "endpoint": "/proveedores",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-17",
+      "categoria": "Proveedores",
+      "descripcion": "Filtrar por nombre",
+      "metodo": "GET",
+      "endpoint": "/proveedores?nombre=arcor",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-18",
+      "categoria": "Proveedores",
+      "descripcion": "Detalle de un proveedor",
+      "metodo": "GET",
+      "endpoint": "/proveedores/2",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-19",
+      "categoria": "Proveedores",
+      "descripcion": "Productos de un proveedor",
+      "metodo": "GET",
+      "endpoint": "/proveedores/2/productos",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-20",
+      "categoria": "Proveedores",
+      "descripcion": "Productos de un proveedor inexistente",
+      "metodo": "GET",
+      "endpoint": "/proveedores/999/productos",
+      "estadoEsperado": 404
+    },
+    {
+      "id": "TC-21",
+      "categoria": "Proveedores",
+      "descripcion": "Cantidad de productos y precio promedio por proveedor",
+      "metodo": "GET",
+      "endpoint": "/proveedores/estadisticas/resumen",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-22",
+      "categoria": "Proveedores",
+      "descripcion": "Crear proveedor",
+      "metodo": "POST",
+      "endpoint": "/proveedores",
+      "body": {
+        "nombre_empresa": "Panificadora Bimbo",
+        "contacto": "Sofía Ríos",
+        "telefono": "011-4000-1234",
+        "email": "ventas@bimbo.com.ar",
+        "direccion": "Av. Gral. Paz 5000",
+        "cuit": "30-60001122-7"
+      },
+      "estadoEsperado": 201
+    },
+    {
+      "id": "TC-23",
+      "categoria": "Proveedores",
+      "descripcion": "Crear proveedor con CUIT repetido",
+      "metodo": "POST",
+      "endpoint": "/proveedores",
+      "body": {
+        "nombre_empresa": "Copia",
+        "contacto": "X",
+        "telefono": "1",
+        "email": "x@x.com",
+        "direccion": "X",
+        "cuit": "30-60001122-7"
+      },
+      "estadoEsperado": 400
+    },
+    {
+      "id": "TC-24",
+      "categoria": "Proveedores",
+      "descripcion": "Crear proveedor con campos faltantes",
+      "metodo": "POST",
+      "endpoint": "/proveedores",
+      "body": {
+        "nombre_empresa": "Incompleto"
+      },
+      "estadoEsperado": 400
+    },
+    {
+      "id": "TC-25",
+      "categoria": "Proveedores",
+      "descripcion": "Modificar proveedor",
+      "metodo": "PUT",
+      "endpoint": "/proveedores/6",
+      "body": {
+        "nombre_empresa": "Grupo Bimbo Argentina",
+        "contacto": "Sofía Ríos",
+        "telefono": "011-4000-1234",
+        "email": "ventas@bimbo.com.ar",
+        "direccion": "Av. Gral. Paz 5000",
+        "cuit": "30-60001122-7"
+      },
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-26",
+      "categoria": "Proveedores",
+      "descripcion": "Cambiar solo el teléfono (PATCH)",
+      "metodo": "PATCH",
+      "endpoint": "/proveedores/6",
+      "body": {
+        "telefono": "011-4000-9999"
+      },
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-27",
+      "categoria": "Productos",
+      "descripcion": "Listar productos con categoría y proveedor",
+      "metodo": "GET",
+      "endpoint": "/productos",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-28",
+      "categoria": "Productos",
+      "descripcion": "Filtrar por categoría (nombre) y precio máximo",
+      "metodo": "GET",
+      "endpoint": "/productos?categoria=bebidas&precioMax=2500",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-29",
+      "categoria": "Productos",
+      "descripcion": "Filtrar por proveedor (id), precio mínimo y con stock",
+      "metodo": "GET",
+      "endpoint": "/productos?proveedor=4&precioMin=2000&enStock=true",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-30",
+      "categoria": "Productos",
+      "descripcion": "Detalle de un producto",
+      "metodo": "GET",
+      "endpoint": "/productos/1",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-31",
+      "categoria": "Productos",
+      "descripcion": "Producto inexistente",
+      "metodo": "GET",
+      "endpoint": "/productos/999",
+      "estadoEsperado": 404
+    },
+    {
+      "id": "TC-32",
+      "categoria": "Productos",
+      "descripcion": "Resumen: cantidad, promedio, mínimo, máximo y stock total",
+      "metodo": "GET",
+      "endpoint": "/productos/estadisticas/resumen",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-33",
+      "categoria": "Productos",
+      "descripcion": "Crear producto",
+      "metodo": "POST",
+      "endpoint": "/productos",
+      "body": {
+        "nombre": "Pan Lactal Bimbo 600 g",
+        "descripcion": "Pan de molde blanco",
+        "precio": 3200,
+        "stock": 40,
+        "id_categoria": 6,
+        "id_proveedor": 6
+      },
+      "estadoEsperado": 201
+    },
+    {
+      "id": "TC-34",
+      "categoria": "Productos",
+      "descripcion": "Crear producto con categoría inexistente",
+      "metodo": "POST",
+      "endpoint": "/productos",
+      "body": {
+        "nombre": "Fantasma",
+        "precio": 100,
+        "stock": 1,
+        "id_categoria": 999,
+        "id_proveedor": 1
+      },
+      "estadoEsperado": 400
+    },
+    {
+      "id": "TC-35",
+      "categoria": "Productos",
+      "descripcion": "Crear producto con precio negativo",
+      "metodo": "POST",
+      "endpoint": "/productos",
+      "body": {
+        "nombre": "Malo",
+        "precio": -5,
+        "id_categoria": 1,
+        "id_proveedor": 1
+      },
+      "estadoEsperado": 400
+    },
+    {
+      "id": "TC-36",
+      "categoria": "Productos",
+      "descripcion": "Modificar producto",
+      "metodo": "PUT",
+      "endpoint": "/productos/11",
+      "body": {
+        "nombre": "Pan Lactal Bimbo 600 g",
+        "descripcion": "Pan de molde blanco",
+        "precio": 3350,
+        "stock": 35,
+        "id_categoria": 6,
+        "id_proveedor": 6
+      },
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-37",
+      "categoria": "Productos",
+      "descripcion": "Cambiar solo el stock (PATCH)",
+      "metodo": "PATCH",
+      "endpoint": "/productos/11",
+      "body": {
+        "stock": 50
+      },
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-38",
+      "categoria": "Productos",
+      "descripcion": "PATCH con stock negativo",
+      "metodo": "PATCH",
+      "endpoint": "/productos/11",
+      "body": {
+        "stock": -3
+      },
+      "estadoEsperado": 400
+    },
+    {
+      "id": "TC-39",
+      "categoria": "Productos",
+      "descripcion": "Aumentar 10% los precios de una categoría",
+      "metodo": "PATCH",
+      "endpoint": "/productos/ajuste-precios",
+      "body": {
+        "id_categoria": 5,
+        "porcentaje": 10
+      },
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-40",
+      "categoria": "Productos",
+      "descripcion": "Ajuste de precios en categoría sin productos",
+      "metodo": "PATCH",
+      "endpoint": "/productos/ajuste-precios",
+      "body": {
+        "id_categoria": 999,
+        "porcentaje": 10
+      },
+      "estadoEsperado": 404
+    },
+    {
+      "id": "TC-41",
+      "categoria": "Empleados",
+      "descripcion": "Listar empleados",
+      "metodo": "GET",
+      "endpoint": "/empleados",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-42",
+      "categoria": "Empleados",
+      "descripcion": "Filtrar por cargo",
+      "metodo": "GET",
+      "endpoint": "/empleados?cargo=vendedor",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-43",
+      "categoria": "Empleados",
+      "descripcion": "Detalle de un empleado",
+      "metodo": "GET",
+      "endpoint": "/empleados/2",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-44",
+      "categoria": "Empleados",
+      "descripcion": "Pedidos y total vendido por empleado",
+      "metodo": "GET",
+      "endpoint": "/empleados/estadisticas/resumen",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-45",
+      "categoria": "Empleados",
+      "descripcion": "Crear empleado",
+      "metodo": "POST",
+      "endpoint": "/empleados",
+      "body": {
+        "nombre": "Carlos",
+        "apellido": "Tevez",
+        "dni": "31222333",
+        "cargo": "Vendedor de Zona",
+        "email": "ctevez@distribuidora.com",
+        "telefono": "011-5555-1005",
+        "fecha_ingreso": "2025-02-03"
+      },
+      "estadoEsperado": 201
+    },
+    {
+      "id": "TC-46",
+      "categoria": "Empleados",
+      "descripcion": "Crear empleado con DNI repetido",
+      "metodo": "POST",
+      "endpoint": "/empleados",
+      "body": {
+        "nombre": "Otro",
+        "apellido": "Tevez",
+        "dni": "31222333",
+        "cargo": "Vendedor",
+        "email": "otro@distribuidora.com",
+        "telefono": "1",
+        "fecha_ingreso": "2025-02-03"
+      },
+      "estadoEsperado": 400
+    },
+    {
+      "id": "TC-47",
+      "categoria": "Empleados",
+      "descripcion": "Crear empleado con fecha inválida",
+      "metodo": "POST",
+      "endpoint": "/empleados",
+      "body": {
+        "nombre": "Ana",
+        "apellido": "Paz",
+        "dni": "40111222",
+        "cargo": "Vendedora",
+        "email": "apaz@distribuidora.com",
+        "telefono": "1",
+        "fecha_ingreso": "ayer"
+      },
+      "estadoEsperado": 400
+    },
+    {
+      "id": "TC-48",
+      "categoria": "Empleados",
+      "descripcion": "Modificar empleado",
+      "metodo": "PUT",
+      "endpoint": "/empleados/5",
+      "body": {
+        "nombre": "Carlos",
+        "apellido": "Tevez",
+        "dni": "31222333",
+        "cargo": "Preventista Mayorista",
+        "email": "ctevez@distribuidora.com",
+        "telefono": "011-5555-1005",
+        "fecha_ingreso": "2025-02-03"
+      },
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-49",
+      "categoria": "Empleados",
+      "descripcion": "Cambiar solo el cargo (PATCH)",
+      "metodo": "PATCH",
+      "endpoint": "/empleados/5",
+      "body": {
+        "cargo": "Supervisor de Ventas"
+      },
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-50",
+      "categoria": "Clientes",
+      "descripcion": "Listar clientes",
+      "metodo": "GET",
+      "endpoint": "/clientes",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-51",
+      "categoria": "Clientes",
+      "descripcion": "Filtrar por ciudad",
+      "metodo": "GET",
+      "endpoint": "/clientes?ciudad=quilmes",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-52",
+      "categoria": "Clientes",
+      "descripcion": "Buscar por nombre o CUIT",
+      "metodo": "GET",
+      "endpoint": "/clientes?busqueda=30-7",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-53",
+      "categoria": "Clientes",
+      "descripcion": "Detalle de un cliente",
+      "metodo": "GET",
+      "endpoint": "/clientes/3",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-54",
+      "categoria": "Clientes",
+      "descripcion": "Pedidos de un cliente con vendedor y transporte",
+      "metodo": "GET",
+      "endpoint": "/clientes/1/pedidos",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-55",
+      "categoria": "Clientes",
+      "descripcion": "Total comprado por cliente",
+      "metodo": "GET",
+      "endpoint": "/clientes/estadisticas/resumen",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-56",
+      "categoria": "Clientes",
+      "descripcion": "Crear cliente",
+      "metodo": "POST",
+      "endpoint": "/clientes",
+      "body": {
+        "nombre": "Maxikiosco 24 Horas",
+        "cuit_dni": "20-35111222-3",
+        "telefono": "011-4311-2233",
+        "email": "maxi24@gmail.com",
+        "direccion": "Corrientes 1500",
+        "ciudad": "CABA"
+      },
+      "estadoEsperado": 201
+    },
+    {
+      "id": "TC-57",
+      "categoria": "Clientes",
+      "descripcion": "Crear cliente sin ciudad",
+      "metodo": "POST",
+      "endpoint": "/clientes",
+      "body": {
+        "nombre": "Incompleto",
+        "cuit_dni": "1",
+        "telefono": "1",
+        "email": "a@a.com",
+        "direccion": "x"
+      },
+      "estadoEsperado": 400
+    },
+    {
+      "id": "TC-58",
+      "categoria": "Clientes",
+      "descripcion": "Modificar cliente",
+      "metodo": "PUT",
+      "endpoint": "/clientes/6",
+      "body": {
+        "nombre": "Maxikiosco 24 Hs",
+        "cuit_dni": "20-35111222-3",
+        "telefono": "011-4311-2233",
+        "email": "maxi24@gmail.com",
+        "direccion": "Corrientes 1550",
+        "ciudad": "CABA"
+      },
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-59",
+      "categoria": "Clientes",
+      "descripcion": "Cambiar solo la ciudad (PATCH)",
+      "metodo": "PATCH",
+      "endpoint": "/clientes/6",
+      "body": {
+        "ciudad": "Lanús"
+      },
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-60",
+      "categoria": "Compañías de envío",
+      "descripcion": "Listar compañías",
+      "metodo": "GET",
+      "endpoint": "/companias-envio",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-61",
+      "categoria": "Compañías de envío",
+      "descripcion": "Detalle de una compañía",
+      "metodo": "GET",
+      "endpoint": "/companias-envio/1",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-62",
+      "categoria": "Compañías de envío",
+      "descripcion": "Cantidad de envíos y total transportado",
+      "metodo": "GET",
+      "endpoint": "/companias-envio/estadisticas/resumen",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-63",
+      "categoria": "Compañías de envío",
+      "descripcion": "Crear compañía",
+      "metodo": "POST",
+      "endpoint": "/companias-envio",
+      "body": {
+        "nombre": "Andreani",
+        "telefono": "0810-122-1111",
+        "email": "empresas@andreani.com"
+      },
+      "estadoEsperado": 201
+    },
+    {
+      "id": "TC-64",
+      "categoria": "Compañías de envío",
+      "descripcion": "Modificar compañía",
+      "metodo": "PUT",
+      "endpoint": "/companias-envio/4",
+      "body": {
+        "nombre": "Andreani Logística",
+        "telefono": "0810-122-1111",
+        "email": "empresas@andreani.com"
+      },
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-65",
+      "categoria": "Compañías de envío",
+      "descripcion": "Cambiar solo el email (PATCH)",
+      "metodo": "PATCH",
+      "endpoint": "/companias-envio/4",
+      "body": {
+        "email": "contacto@andreani.com"
+      },
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-66",
+      "categoria": "Pedidos",
+      "descripcion": "Listar pedidos con cliente, empleado y compañía",
+      "metodo": "GET",
+      "endpoint": "/pedidos",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-67",
+      "categoria": "Pedidos",
+      "descripcion": "Filtrar por estado y cliente",
+      "metodo": "GET",
+      "endpoint": "/pedidos?estado=Pendiente&clienteId=4",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-68",
+      "categoria": "Pedidos",
+      "descripcion": "Filtrar con estado inválido",
+      "metodo": "GET",
+      "endpoint": "/pedidos?estado=Volando",
+      "estadoEsperado": 400
+    },
+    {
+      "id": "TC-69",
+      "categoria": "Pedidos",
+      "descripcion": "Detalle con sus renglones",
+      "metodo": "GET",
+      "endpoint": "/pedidos/3",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-70",
+      "categoria": "Pedidos",
+      "descripcion": "Pedido inexistente",
+      "metodo": "GET",
+      "endpoint": "/pedidos/999",
+      "estadoEsperado": 404
+    },
+    {
+      "id": "TC-71",
+      "categoria": "Pedidos",
+      "descripcion": "Totales por estado",
+      "metodo": "GET",
+      "endpoint": "/pedidos/estadisticas/resumen",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-72",
+      "categoria": "Pedidos",
+      "descripcion": "Crear pedido",
+      "metodo": "POST",
+      "endpoint": "/pedidos",
+      "body": {
+        "numero_factura": "FAC-B-0001-00000106",
+        "id_cliente": 6,
+        "id_empleado": 5,
+        "id_compania_envio": 4,
+        "items": [
+          {
+            "id_producto": 11,
+            "cantidad": 5
+          },
+          {
+            "id_producto": 9,
+            "cantidad": 10
+          }
+        ]
+      },
+      "estadoEsperado": 201
+    },
+    {
+      "id": "TC-73",
+      "categoria": "Pedidos",
+      "descripcion": "Crear pedido con más cantidad que el stock",
+      "metodo": "POST",
+      "endpoint": "/pedidos",
+      "body": {
+        "numero_factura": "FAC-B-0001-00000107",
+        "id_cliente": 2,
+        "id_empleado": 3,
+        "id_compania_envio": 1,
+        "items": [
+          {
+            "id_producto": 6,
+            "cantidad": 5000
+          }
+        ]
+      },
+      "estadoEsperado": 400
+    },
+    {
+      "id": "TC-74",
+      "categoria": "Pedidos",
+      "descripcion": "Crear pedido con cliente inexistente (se revierte todo)",
+      "metodo": "POST",
+      "endpoint": "/pedidos",
+      "body": {
+        "numero_factura": "FAC-B-0001-00000108",
+        "id_cliente": 999,
+        "id_empleado": 3,
+        "id_compania_envio": 1,
+        "items": [
+          {
+            "id_producto": 2,
+            "cantidad": 1
+          }
+        ]
+      },
+      "estadoEsperado": 400
+    },
+    {
+      "id": "TC-75",
+      "categoria": "Pedidos",
+      "descripcion": "Crear pedido sin items",
+      "metodo": "POST",
+      "endpoint": "/pedidos",
+      "body": {
+        "numero_factura": "FAC-B-0001-00000109",
+        "id_cliente": 2,
+        "id_empleado": 3,
+        "id_compania_envio": 1,
+        "items": []
+      },
+      "estadoEsperado": 400
+    },
+    {
+      "id": "TC-76",
+      "categoria": "Pedidos",
+      "descripcion": "Cambiar estado del pedido",
+      "metodo": "PUT",
+      "endpoint": "/pedidos/6",
+      "body": {
+        "estado": "Enviado"
+      },
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-77",
+      "categoria": "Pedidos",
+      "descripcion": "Cambiar estado con PATCH",
+      "metodo": "PATCH",
+      "endpoint": "/pedidos/6",
+      "body": {
+        "estado": "Entregado"
+      },
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-78",
+      "categoria": "Pedidos",
+      "descripcion": "Cambiar a un estado inválido",
+      "metodo": "PUT",
+      "endpoint": "/pedidos/6",
+      "body": {
+        "estado": "Perdido"
+      },
+      "estadoEsperado": 400
+    },
+    {
+      "id": "TC-79",
+      "categoria": "Pedidos",
+      "descripcion": "Cambiar a una compañía inexistente",
+      "metodo": "PUT",
+      "endpoint": "/pedidos/6",
+      "body": {
+        "id_compania_envio": 999
+      },
+      "estadoEsperado": 400
+    },
+    {
+      "id": "TC-80",
+      "categoria": "Informes",
+      "descripcion": "Informe de ventas por categoría y por mes",
+      "metodo": "GET",
+      "endpoint": "/informes/ventas",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-81",
+      "categoria": "Informes",
+      "descripcion": "Informe de ventas de mayo de 2024",
+      "metodo": "GET",
+      "endpoint": "/informes/ventas?desde=2024-05-01&hasta=2024-05-31",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-82",
+      "categoria": "Informes",
+      "descripcion": "Informe con fecha inválida",
+      "metodo": "GET",
+      "endpoint": "/informes/ventas?desde=mayo",
+      "estadoEsperado": 400
+    },
+    {
+      "id": "TC-83",
+      "categoria": "Errores",
+      "descripcion": "JSON mal armado en el body",
+      "metodo": "POST",
+      "endpoint": "/categorias",
+      "body": "{\"nombre\": ",
+      "estadoEsperado": 400
+    },
+    {
+      "id": "TC-84",
+      "categoria": "Borrados",
+      "descripcion": "Borrar pedido (los renglones se borran en cascada)",
+      "metodo": "DELETE",
+      "endpoint": "/pedidos/6",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-85",
+      "categoria": "Borrados",
+      "descripcion": "Borrar pedido ya borrado",
+      "metodo": "DELETE",
+      "endpoint": "/pedidos/6",
+      "estadoEsperado": 404
+    },
+    {
+      "id": "TC-86",
+      "categoria": "Borrados",
+      "descripcion": "Borrar cliente",
+      "metodo": "DELETE",
+      "endpoint": "/clientes/6",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-87",
+      "categoria": "Borrados",
+      "descripcion": "Borrar compañía",
+      "metodo": "DELETE",
+      "endpoint": "/companias-envio/4",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-88",
+      "categoria": "Borrados",
+      "descripcion": "Borrar empleado",
+      "metodo": "DELETE",
+      "endpoint": "/empleados/5",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-89",
+      "categoria": "Borrados",
+      "descripcion": "Borrar producto",
+      "metodo": "DELETE",
+      "endpoint": "/productos/11",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-90",
+      "categoria": "Borrados",
+      "descripcion": "Borrar proveedor",
+      "metodo": "DELETE",
+      "endpoint": "/proveedores/6",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-91",
+      "categoria": "Borrados",
+      "descripcion": "Borrar categoría",
+      "metodo": "DELETE",
+      "endpoint": "/categorias/6",
+      "estadoEsperado": 200
+    },
+    {
+      "id": "TC-92",
+      "categoria": "Borrados",
+      "descripcion": "Borrar categoría inexistente",
+      "metodo": "DELETE",
+      "endpoint": "/categorias/999",
+      "estadoEsperado": 404
+    }
+  ]
+}
